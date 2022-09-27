@@ -5307,7 +5307,7 @@ void loop(uint32_t x_val, uint32_t y_val) {
  8002782:	484a      	ldr	r0, [pc, #296]	; (80028ac <loop+0x134>)
  8002784:	f000 fa74 	bl	8002c70 <_ZN3ros11NodeHandle_I13STM32HardwareLi25ELi25ELi1024ELi1024EE8spinOnceEv>
 
-  if (*e_stop_status==1 && *am_status==1) { //if var 'am_status == true' , it defines manual mode
+  if (*e_stop_status==true && *am_status==true) { //if var 'am_status == true' , it defines manual mode
  8002788:	4b49      	ldr	r3, [pc, #292]	; (80028b0 <loop+0x138>)
  800278a:	681b      	ldr	r3, [r3, #0]
  800278c:	781b      	ldrb	r3, [r3, #0]
@@ -5404,7 +5404,7 @@ void loop(uint32_t x_val, uint32_t y_val) {
  8002866:	f7ff fcde 	bl	8002226 <_ZN3ros9Publisher7publishEPKNS_3MsgE>
  800286a:	e018      	b.n	800289e <loop+0x126>
   }
-  else if (*e_stop_status==0) // e_stop is on & *am_status is on/off
+  else if (*e_stop_status==false) // e_stop is on & *am_status is on/off
  800286c:	4b10      	ldr	r3, [pc, #64]	; (80028b0 <loop+0x138>)
  800286e:	681b      	ldr	r3, [r3, #0]
  8002870:	781b      	ldrb	r3, [r3, #0]

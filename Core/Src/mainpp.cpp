@@ -82,7 +82,7 @@ void loop(uint32_t x_val, uint32_t y_val) {
 
   nh.spinOnce();
 
-  if (*e_stop_status==1 && *am_status==1) { //if var 'am_status == true' , it defines manual mode
+  if (*e_stop_status==true && *am_status==true) { //if var 'am_status == true' , it defines manual mode
 	  axis_X = map(x_val,0,4095,-10000,10000) / (float)10000.0;
 	  axis_Y = map(y_val,0,4095,-10000,10000) / (float)10000.0;
 
@@ -95,7 +95,7 @@ void loop(uint32_t x_val, uint32_t y_val) {
 
 	  freeway_diagnostics.publish(&stm_pub_msg);
   }
-  else if (*e_stop_status==0) // e_stop is on & *am_status is on/off
+  else if (*e_stop_status==false) // e_stop is on & *am_status is on/off
   {
 	  stm_pub_msg.am_status = *am_status;
 	  stm_pub_msg.e_stop_status = false;
