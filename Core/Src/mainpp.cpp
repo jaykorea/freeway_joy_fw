@@ -62,11 +62,12 @@ long map(uint32_t a, long b, long c, long d, long e) {
 	return (a - b)*(e - d)/(c - b) + d;
 }
 
+uint32_t previous_time;
+uint32_t pub_period_time = 50;
 
 // Setup node:
 void setup(void) {
   nh.initNode();
-
 //  nh.advertiseService(server);
 //  nh.advertiseService(server2);
   nh.subscribe(am_status_sub);
@@ -80,8 +81,7 @@ void setup(void) {
 void loop(uint32_t x_val, uint32_t y_val) {
 
 
-  nh.spinOnce();
-
+if(previous_time + pub_period_time <= HAL_GetTick()) {
   if (*e_stop_status==true && *am_status==true) { //if var 'am_status == true' , it defines manual mode
 	  axis_X = map(x_val,0,4095,-10000,10000) / (float)10000.0;
 	  axis_Y = map(y_val,0,4095,-10000,10000) / (float)10000.0;
@@ -104,8 +104,11 @@ void loop(uint32_t x_val, uint32_t y_val) {
 
 	  freeway_diagnostics.publish(&stm_pub_msg);
   }
+  previous_time = HAL_GetTick();
+}
+  nh.spinOnce();
 
-  HAL_Delay(30);
+  HAL_Delay(1);
 }
 
 
@@ -150,17 +153,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 }
 
-void HAL_GPIO_EXTI_Callback3(uint16_t GPIO_Pin)
-{
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(GPIO_Pin);
-  static bool pin_stat = true;
-  /* NOTE: This function Should not be modified, when the callback is needed,
-           the HAL_GPIO_EXTI_Callback could be implemented in the user file
-   */
-  for (int i=0; i<10; i++){
-	pin_stat = HAL_GPIO_ReadPin (GPIOB, GPIO_Pin);
-  }
-  //am_status = &pin_stat;
-  //HAL_Delay(1);
-}
+//void HAL_GPIO_EXTI_Callback3(uint16_t GPIO_Pin)
+//{
+//  /* Prevent unused argument(s) compilation warning */
+//  UNUSED(GPIO_Pin);
+//  static bool pin_stat = true;
+//  /* NOTE: This function Should not be modified, when the callback is needed,
+//           the HAL_GPIO_EXTI_Callback could be implemented in the user file
+//   */
+//  for (int i=0; i<10; i++){
+//	pin_stat = HAL_GPIO_ReadPin (GPIOB, GPIO_Pin);
+//  }
+//  //am_status = &pin_stat;
+//  //HAL_Delay(1);
+//}
